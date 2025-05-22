@@ -1,0 +1,27 @@
+{
+  "name": "s3-csv-source",
+  "config": {
+    "connector.class": "io.streamthoughts.kafka.connect.filepulse.source.FilePulseSourceConnector",
+    "fs.scan.class": "io.streamthoughts.kafka.connect.filepulse.scanner.s3.S3BucketScanner",
+    "fs.listing.class": "io.streamthoughts.kafka.connect.filepulse.fs.AmazonS3FileSystemListing",
+    "fs.scan.interval.ms": "10000",
+    "fs.scan.filters": "io.streamthoughts.kafka.connect.filepulse.scanner.s3.RegexS3ObjectFilter",
+    "fs.scan.filters.s3ObjectRegex.pattern": ".*\\.csv$",
+    "fs.cleanup.policy.class": "io.streamthoughts.kafka.connect.filepulse.fs.clean.LogCleanupPolicy",
+    "aws.access.key.id": "SECRET",
+    "aws.secret.access.key": "SECRET",
+    "aws.s3.region": "us-west-2",
+    "aws.s3.bucket.name": "streamkap-s3-test-bucket",
+    "aws.s3.object.prefix": "file-pulse",
+    "file.filter.class": "io.streamthoughts.kafka.connect.filepulse.filter.AcceptAllFileListFilter",
+    "tasks.reader.class": "io.streamthoughts.kafka.connect.filepulse.fs.reader.AmazonS3RowFileInputReader",
+    "tasks.reader.csv.separator": ",",
+    "tasks.reader.csv.headers": "true",
+    "tasks.reader.csv.first.row.as.header": "true",
+    "tasks.file.status.storage.class": "io.streamthoughts.kafka.connect.filepulse.state.KafkaFileObjectStateBackingStore",
+    "tasks.file.status.storage.bootstrap.servers": "kafka:29092",
+    "tasks.file.status.storage.topic": "connect-file-pulse-status",
+    "tasks.file.status.storage.topic.partitions": "3",
+    "tasks.file.status.storage.topic.replication.factor": "1"
+  }
+}
