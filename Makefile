@@ -46,6 +46,13 @@ print-info:
 	echo "DATE="$(DATE);
 	echo -e "\n==========================================\n";
 
+	@mkdir -p build
+	@echo "CONNECT_VERSION=$(VERSION)" > build/env.properties
+	@echo "GIT_COMMIT=$(COMMIT)" >> build/env.properties
+	@echo "GIT_BRANCH=$(BRANCH)" >> build/env.properties
+	@echo "MVN_PROFILE=$$MVN_PROFILE" >> build/env.properties
+	@echo "DATE=$(DATE)" >> build/env.properties
+
 build-dist: print-info
 	if [[ ! -z "$$MVN_PROFILE" ]]; then \
 		./mvnw clean package -B -q -DskipTests -P dist,$$MVN_PROFILE; \
