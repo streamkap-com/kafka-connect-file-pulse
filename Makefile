@@ -4,7 +4,10 @@ SHELL = bash
 VERSION := $(shell mvn org.apache.maven.plugins:maven-help-plugin:3.1.0:evaluate -Dexpression=project.version -q -DforceStdout)
 COMMIT := $(shell git rev-parse --short HEAD)
 BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
-DATE := $(shell date --rfc-3339=seconds)
+#DATE := $(shell date --rfc-3339=seconds)
+DATE := $(shell date "+%Y-%m-%d %H:%M:%S%z" | sed -E 's/([0-9]{2})([0-9]{2})$$/\1:\2/')
+
+
 
 REPOSITORY = streamthoughts
 IMAGE = kafka-connect-file-pulse
@@ -40,6 +43,7 @@ print-info:
 	echo "GIT_COMMIT="$(COMMIT);
 	echo "GIT_BRANCH="$(BRANCH);
 	echo "MVN_PROFILE="$$MVN_PROFILE;
+	echo "DATE="$(DATE);
 	echo -e "\n==========================================\n";
 
 build-dist: print-info

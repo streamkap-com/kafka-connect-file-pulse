@@ -32,9 +32,9 @@ import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.misc.*;
 import org.antlr.v4.runtime.tree.*;
 
-@SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
+@SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast", "CheckReturnValue", "this-escape"})
 public class ScELParser extends Parser {
-	static { RuntimeMetaData.checkVersion("4.10.1", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.13.2", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -127,6 +127,7 @@ public class ScELParser extends Parser {
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class ScelContext extends ParserRuleContext {
 		public TerminalNode EOF() { return getToken(ScELParser.EOF, 0); }
 		public PropertyDeclarationContext propertyDeclaration() {
@@ -200,6 +201,7 @@ public class ScELParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class SubstitutionExpressionContext extends ParserRuleContext {
 		public List<SubstitutionStrContentContext> substitutionStrContent() {
 			return getRuleContexts(SubstitutionStrContentContext.class);
@@ -237,7 +239,7 @@ public class ScELParser extends Parser {
 			setState(35);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << LineStrText) | (1L << LineStrEscapedChar) | (1L << LineSubstExprStart))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 917504L) != 0)) {
 				{
 				setState(33);
 				_errHandler.sync(this);
@@ -276,6 +278,7 @@ public class ScELParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class SubstitutionStrContentContext extends ParserRuleContext {
 		public TerminalNode LineStrText() { return getToken(ScELParser.LineStrText, 0); }
 		public TerminalNode LineStrEscapedChar() { return getToken(ScELParser.LineStrEscapedChar, 0); }
@@ -323,6 +326,7 @@ public class ScELParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class SubstitutionStrExpressionContext extends ParserRuleContext {
 		public TerminalNode LineSubstExprStart() { return getToken(ScELParser.LineSubstExprStart, 0); }
 		public TerminalNode LineSubstExprEnd() { return getToken(ScELParser.LineSubstExprEnd, 0); }
@@ -389,7 +393,7 @@ public class ScELParser extends Parser {
 				setState(45); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << Literal) | (1L << PropertyExprStart) | (1L << Identifier))) != 0) );
+			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & 9437186L) != 0) );
 			setState(47);
 			match(LineSubstExprEnd);
 			}
@@ -405,6 +409,7 @@ public class ScELParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class ExpressionContext extends ParserRuleContext {
 		public PropertyDeclarationContext propertyDeclaration() {
 			return getRuleContext(PropertyDeclarationContext.class,0);
@@ -462,6 +467,7 @@ public class ScELParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class PropertyDeclarationContext extends ParserRuleContext {
 		public TerminalNode PropertyExprStart() { return getToken(ScELParser.PropertyExprStart, 0); }
 		public ScopeContext scope() {
@@ -538,6 +544,7 @@ public class ScELParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class ScopeContext extends ParserRuleContext {
 		public TerminalNode Identifier() { return getToken(ScELParser.Identifier, 0); }
 		public ScopeContext(ParserRuleContext parent, int invokingState) {
@@ -575,6 +582,7 @@ public class ScELParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class AttributeContext extends ParserRuleContext {
 		public List<TerminalNode> Identifier() { return getTokens(ScELParser.Identifier); }
 		public TerminalNode Identifier(int i) {
@@ -638,6 +646,7 @@ public class ScELParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class FunctionDeclarationContext extends ParserRuleContext {
 		public TerminalNode Identifier() { return getToken(ScELParser.Identifier, 0); }
 		public FunctionParametersContext functionParameters() {
@@ -680,6 +689,7 @@ public class ScELParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class FunctionParametersContext extends ParserRuleContext {
 		public TerminalNode LPAREN() { return getToken(ScELParser.LPAREN, 0); }
 		public TerminalNode RPAREN() { return getToken(ScELParser.RPAREN, 0); }
@@ -720,7 +730,7 @@ public class ScELParser extends Parser {
 			setState(88);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << Literal) | (1L << PropertyExprStart) | (1L << Identifier))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 9437186L) != 0)) {
 				{
 				{
 				setState(78);
@@ -764,6 +774,7 @@ public class ScELParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class FunctionObjectParameterContext extends ParserRuleContext {
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
@@ -822,6 +833,7 @@ public class ScELParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class ValueContext extends ParserRuleContext {
 		public TerminalNode Literal() { return getToken(ScELParser.Literal, 0); }
 		public ValueContext(ParserRuleContext parent, int invokingState) {
