@@ -23,6 +23,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.StringJoiner;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -43,6 +44,8 @@ public abstract class AbstractDelimitedRowFilter<T extends AbstractRecordFilter<
     private StructSchema schema;
 
     private final Map<Integer, TypedField> columnsTypesByIndex = new HashMap<>();
+
+    private String lastExtractedColumnNames = null;
 
     /**
      * {@inheritDoc}
@@ -100,7 +103,7 @@ public abstract class AbstractDelimitedRowFilter<T extends AbstractRecordFilter<
 
         String[] columnValues = parseColumnsValues(source);
 
-        if (schema == null || isSchemaDynamic()) {
+        if (schema == null || isSchemaDynamic() || hasSchemaChanged(record, columnValues.length)) {
             inferSchemaFromRecord(record, columnValues.length);
         }
         final TypedStruct struct = buildStructForFields(columnValues);
@@ -115,12 +118,26 @@ public abstract class AbstractDelimitedRowFilter<T extends AbstractRecordFilter<
                configs.isAutoGenerateColumnNames();
     }
 
+    private boolean hasSchemaChanged(final TypedStruct record, int numColumns) {
+        if (numColumns != columnsTypesByIndex.size()) {
+            return true;
+        }
+        if (configs.extractColumnName() != null) {
+            final String fieldName = configs.extractColumnName();
+            final String currentHeaders = record.first(fieldName).getString();
+            return !Objects.equals(currentHeaders, lastExtractedColumnNames);
+        }
+        return false;
+    }
+
     private void inferSchemaFromRecord(final TypedStruct record, int numColumns) {
         schema = Schema.struct();
+        columnsTypesByIndex.clear();
 
         if (configs.extractColumnName() != null) {
             final String fieldName = configs.extractColumnName();
             String field = record.first(fieldName).getString();
+            lastExtractedColumnNames = field;
             if (field == null) {
                 throw new FilterException(
                     "Cannot find field for name '" + fieldName + "' to determine columns names"

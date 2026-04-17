@@ -113,6 +113,59 @@ public class CSVFilterTest {
         Assert.assertNotNull(output.schema().field("column3"));
     }
 
+    @Test
+    public void should_reinfer_schema_when_headers_change_between_records() {
+        configs.put(READER_EXTRACT_COLUMN_NAME_CONFIG, "headers");
+        filter.configure(configs, alias -> null);
+
+        // First record with 3 columns
+        TypedStruct input1 = TypedStruct.create()
+                .put("message", "val1;val2;val3")
+                .put("headers", Collections.singletonList("colA;colB;colC"));
+        RecordsIterable<TypedStruct> output1 = filter.apply(null, input1, false);
+        Assert.assertEquals(1, output1.size());
+        TypedStruct record1 = output1.iterator().next();
+        Assert.assertEquals("val1", record1.getString("colA"));
+        Assert.assertEquals("val2", record1.getString("colB"));
+        Assert.assertEquals("val3", record1.getString("colC"));
+
+        // Second record with different headers (different table, same column count)
+        TypedStruct input2 = TypedStruct.create()
+                .put("message", "x1;x2;x3")
+                .put("headers", Collections.singletonList("name;address;city"));
+        RecordsIterable<TypedStruct> output2 = filter.apply(null, input2, false);
+        Assert.assertEquals(1, output2.size());
+        TypedStruct record2 = output2.iterator().next();
+        Assert.assertEquals("x1", record2.getString("name"));
+        Assert.assertEquals("x2", record2.getString("address"));
+        Assert.assertEquals("x3", record2.getString("city"));
+    }
+
+    @Test
+    public void should_reinfer_schema_when_column_count_changes_between_records() {
+        configs.put(READER_EXTRACT_COLUMN_NAME_CONFIG, "headers");
+        filter.configure(configs, alias -> null);
+
+        // First record with 3 columns
+        TypedStruct input1 = TypedStruct.create()
+                .put("message", "val1;val2;val3")
+                .put("headers", Collections.singletonList("colA;colB;colC"));
+        RecordsIterable<TypedStruct> output1 = filter.apply(null, input1, false);
+        Assert.assertEquals(1, output1.size());
+        TypedStruct record1 = output1.iterator().next();
+        Assert.assertEquals("val1", record1.getString("colA"));
+
+        // Second record with more columns (different table)
+        TypedStruct input2 = TypedStruct.create()
+                .put("message", "x1;x2;x3;x4;x5")
+                .put("headers", Collections.singletonList("c1;c2;c3;c4;c5"));
+        RecordsIterable<TypedStruct> output2 = filter.apply(null, input2, false);
+        Assert.assertEquals(1, output2.size());
+        TypedStruct record2 = output2.iterator().next();
+        Assert.assertEquals("x1", record2.getString("c1"));
+        Assert.assertEquals("x5", record2.getString("c5"));
+    }
+
     @Test(expected = DataException.class)
     public void should_fail_given_repeated_columns_names_and_duplicate_not_allowed() {
         configs.put(READER_EXTRACT_COLUMN_NAME_CONFIG, "headers");
